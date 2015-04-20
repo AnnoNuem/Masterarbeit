@@ -9,11 +9,12 @@ viz.res.addPath(r'C:\Users\axel\Desktop\Masterarbeit\resources')
 
 #own imports
 from participantInfo import getParticipantInfo
-from training2DJoystick import training2DJoystick
-from testing2DJoystick import testing2DJoystick
+from joystick2D import training2DJoystick
+from joystick2D import testing2DJoystick
 from environment2D import create2DEnvironment
-from training3DJoystick import training3DJoystick
-from testing3DJoystick import testing3DJoystick
+from environment3D import create3DEnvironment
+from joystick3D import training3DJoystick
+from joystick3D import testing3DJoystick
 from environment3D import create3DEnvironment
 
 #vizard adjustments
@@ -25,15 +26,15 @@ def experiment():
 
 	#Proceed through experiment phases
 	
-	#participant = yield getParticipantInfo()
-#	if participant.environment=='2D':
-#		create2DEnvironment()
-#		yield training2DJoystick()
-#		results = yield testing2DJoystick()
-#	elif participant.environment=='3D':
-#		create3DEnvironment()
-#		yield training3DJoystick()
-#		results = yield testing3DJoystick()
+	participant = yield getParticipantInfo()
+	if participant.environment=='2D':
+		create2DEnvironment()
+		yield training2DJoystick()
+		results = yield testing2DJoystick()
+	elif participant.environment=='3D':
+		create3DEnvironment()
+		yield training3DJoystick()
+		results = yield testing3DJoystick()
 
 	create2DEnvironment()
 	yield training2DJoystick()

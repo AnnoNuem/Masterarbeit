@@ -1,2 +1,2 @@
-﻿numberOfTrainingTrials = 100
-numberOfTestTrials = 1
+﻿numberOfTrainingTrials = 3
+numberOfTestTrials = 3
