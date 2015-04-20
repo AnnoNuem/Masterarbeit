@@ -5,8 +5,23 @@ import vizinfo
 import vizproximity
 import vizshape
 
+#physics stuff
+viz.phys.enable()
+viz.phys.setGravity([0,0,0]) 
+
+# point
 point = vizshape.addCircle(radius = 0.5, slices=100)
-goal = vizshape.addCircle(slices=100)
+pointPhys = point.collideSphere()   # Define ball's physical properties 
+thrust = point.addThruster(force=[0,0,0]) 
+
+#goal
+goal = vizshape.addCircle(slices=100, radius=2)
+
+#arrow
+arrow = vizshape.addArrow()
+
+
+viz.mouse(viz.OFF)
 
 # Load DirectInput plug-in
 dinput = viz.add('DirectInput.dle')
@@ -18,24 +33,26 @@ joy = dinput.addJoystick()
 joy.setDeadZone(0.2)
 
 def create2DEnvironment():	
-	#dojo = viz.addChild('dojo.osgb')
+	#ground = viz.add('tut_ground.wrl')  # Add ground
+	#ground.collidePlane()   # Make collideable plane
+		
 	viz.clearcolor(viz.WHITE)
-	#viz.addChild('ground_white.osgb')
 	
 	#look from above
 	viz.MainView.setPosition([0,50,0])
 	viz.MainView.setEuler([0,90,0])
 	
-	
-
 	goal.setEuler(0,90,0)
 	goal.color(viz.GREEN)
 	
-
 	point.setEuler(0,90,0)
 	point.setPosition(0,20,0)
-	point.color(viz.RED)
+	point.color(viz.RED)	
 	
+	arrow.setPosition(0,20,0)
+	arrow.color(viz.BLUE)
+
+
 
 
 #	#Create proximity manager and set debug on. Toggle debug with d key
