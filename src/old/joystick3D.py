@@ -33,8 +33,7 @@ position3Ztest = -10
 #training or testing
 training = False
 
-# own gravity applied as force since gravity should only be applied under certain conditions
-gravity = -3
+
 
 
 def createPositions():

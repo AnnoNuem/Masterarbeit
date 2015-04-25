@@ -1,0 +1,10 @@
+Participant ID: 
+Last Name: 
+First Name: 
+Gender: male
+Age: 20-30
+Environment: 2D
+
+
+Experiment start: 09:52:57
+###New Block of trials: 3D=False, Intro=True, training=False, joystick=True

@@ -4,18 +4,16 @@ import vizact
 import vizinfo
 import vizproximity
 import vizshape
+import environment
 
 viz.res.addPath(r'C:\Users\axel\Desktop\Masterarbeit\resources')
 
 #own imports
 from participantInfo import getParticipantInfo
-from joystick2D import training2DJoystick
-from joystick2D import testing2DJoystick
-from environment2D import create2DEnvironment
-from environment3D import create3DEnvironment
-from joystick3D import training3DJoystick
-from joystick3D import testing3DJoystick
-from environment3D import create3DEnvironment
+from joystick2D import runSetOfTrials
+from environment import createEnvironment
+import parameters
+import logger
 
 #vizard adjustments
 viz.setMultiSample(4)
@@ -24,36 +22,65 @@ viz.go()
 
 def experiment():
 
-	#Proceed through experiment phases
+	# get participant data via gui
+	parameters.participantData = yield getParticipantInfo()
 	
-	participant = yield getParticipantInfo()
-	if participant.environment=='2D':
-		create2DEnvironment()
-		yield training2DJoystick()
-		results = yield testing2DJoystick()
-	elif participant.environment=='3D':
+	#init logger and create file
+	logger.open_logger()
+	
+	if parameters.participantData.environment=='2D':
+		
+		#2d Environment Intro
+		parameters.dreiDEnvironment = False
+		parameters.intro = True
+		parameters.training = False
+		parameters.joystick = True
+		environment.info.setText("Introduction")
+		environment.info.visible(viz.ON)
+		yield viztask.waitTime(2)
+		environment.info.visible(viz.OFF)
+		createEnvironment()
+		logger.write_logger('\n###New Block of trials: 3D=' + str(parameters.dreiDEnvironment) + ', Intro=' + str(parameters.intro) + ', training=' + str(parameters.training) + ', joystick=' + str(parameters.joystick))
+		yield runSetOfTrials()
+		
+		#2d training jostick
+		parameters.dreiDEnvironment = False
+		parameters.intro = False
+		parameters.training = True
+		parameters.joystick = True
+		environment.info.setText("Training")
+		environment.info.visible(viz.ON)
+		yield viztask.waitTime(2)
+		environment.info.visible(viz.OFF)
+		logger.write_logger('\n###New Block of trials: 3D=' + str(parameters.dreiDEnvironment) + ', Intro=' + str(parameters.intro) + ', training=' + str(parameters.training) + ', joystick=' + str(parameters.joystick))
+		yield runSetOfTrials()
+		
+		#2d Testing joystick
+		parameters.dreiDEnvironment = False
+		parameters.intro = False
+		parameters.training = False
+		parameters.joystick = True
+		environment.info.setText("Testing")
+		environment.info.visible(viz.ON)
+		yield viztask.waitTime(2)
+		environment.info.visible(viz.OFF)
+		logger.write_logger('\n###New Block of trials: 3D=' + str(parameters.dreiDEnvironment) + ', Intro=' + str(parameters.intro) + ', training=' + str(parameters.training) + ', joystick=' + str(parameters.joystick))
+		yield runSetOfTrials()
+		
+		
+		
+		#results = yield testing2DJoystick()
+	elif parameters.participantData.environment=='3D':
 		create3DEnvironment()
 		yield training3DJoystick()
 		results = yield testing3DJoystick()
 
-	create2DEnvironment()
-	yield training2DJoystick()
-	results = yield testing2DJoystick()
-		
-		
-	#Log results to file
-	try:
-		with open(participant.id + '_experiment_data.txt','w') as f:
 
-			#write participant data to file
-			data = "Participant ID: {p.id}\nLast Name: {p.lastName}\nFirst Name: {p.firstName}\nGender: {p.gender}\nAge: {p.ageGroup}\nEnvironment: {p.environment}\n\n".format(p=participant)
-			f.write(data)
+	logger.close_logger()
+	environment.info.setText("Experiment finished. Thank You")
+	environment.info.visible(viz.ON)
+	yield viztask.waitTime(2)
+	environment.info.visible(viz.OFF)	
 
-			#write result of each trial
-			for name,time in results:
-				data = "The {} trial took {:.2f} seconds\n".format(name,time)
-				f.write(data)
-	except IOError:
-		viz.logWarn('Could not log results to file. Make sure you have permission to write to folder')
 
 viztask.schedule(experiment)

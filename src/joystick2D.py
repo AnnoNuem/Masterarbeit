@@ -7,7 +7,7 @@ import vizshape
 import infoPanel
 import random
 import parameters
-import environment2D
+import environment
 import windSpeed
 
 #goal positions for training
@@ -30,14 +30,15 @@ position2Ztest = 10
 position3Xtest = 0
 position3Ztest = -10
 
-#training or testing
-training = False
-
+# own gravity applied as force since gravity should only be applied under certain conditions
+gravity = -3
 
 def createPositions():
-	if training:
+	if parameters.intro:
+		return [int(4*random.random()) for i in xrange(parameters.numberOfIntroTrials)]
+	elif parameters.training: 
 		return [int(4*random.random()) for i in xrange(parameters.numberOfTrainingTrials)]
-	else: 
+	else:
 		return [int(4*random.random()) for i in xrange(parameters.numberOfTestTrials)]
 	
 def UpdateMovement():
@@ -45,106 +46,69 @@ def UpdateMovement():
 	elapsed = viz.elapsed()
 
 	# Get the joystick position
-	x,y,z = environment2D.joy.getPosition()
+	x,y,z = environment.joy.getPosition()
 
 	# Get the twist of the joystick
-	twist = environment2D.joy.getTwist()
+	twist = environment.joy.getTwist()
 
 	# Move the point based on xy-axis value
 	move_amount = 10 * elapsed
-	position = environment2D.point.getPosition()
+	position = environment.point.getPosition()
 	position = [position[0] + x*move_amount,position[1],position[2] + y*move_amount]
 	# compute size direction and position of arrow
-	environment2D.point.setPosition(position)
-	if (training == True):
-		environment2D.arrow.setPosition(position[0] + 2, 21, position[2] + 2)
-		environment2D.arrow.setAxisAngle( [0, 1, 0 , windSpeed.computeWindDirection(position)] ) 
-		environment2D.arrow.setScale([windSpeed.computeWindSpeed(position) * 5 , 1, windSpeed.computeWindSpeed(position) * 5])
+	environment.point.setPosition(position)
+	if (parameters.intro or parameters.training):
+		environment.arrow.setPosition(position[0] + 2, 21, position[2] + 2)
+		environment.arrow.setAxisAngle( [0, 1, 0 , windSpeed.computeWindDirection(position)] ) 
+		environment.arrow.setScale([windSpeed.computeWindSpeed(position) * 5 , 1, windSpeed.computeWindSpeed(position) * 5])
 
 s = viztask.Signal()
 vizact.onkeydown(' ',s.send)
 	
-def training2DJoystick():
-	training = True
+def runSetOfTrials():
 	positions = createPositions()
-	joystickMove = vizact.ontimer(0, UpdateMovement)
+	move = vizact.ontimer(0, UpdateMovement)
 	
 	for i in positions:
-		environment2D.point.setPosition(0,20,0)
+		environment.point.setPosition(0,20,0)
 		if i == 0:
-			environment2D.goal.setPosition(position0Xtrain,0,position0Ztrain)
+			environment.goal.setPosition(position0Xtrain,0,position0Ztrain)
 		elif i == 1:
-			environment2D.goal.setPosition(position1Xtrain,0,position1Ztrain)
+			environment.goal.setPosition(position1Xtrain,0,position1Ztrain)
 		elif i == 2:
-			environment2D.goal.setPosition(position2Xtrain,0,position2Ztrain)
+			environment.goal.setPosition(position2Xtrain,0,position2Ztrain)
 		elif i == 3:
-			environment2D.goal.setPosition(position3Xtrain,0,position3Xtrain)
+			environment.goal.setPosition(position3Xtrain,0,position3Xtrain)
 		
 		#enable joystick movement
-		environment2D.point.visible(viz.ON)
-		environment2D.goal.visible(viz.ON)	
-		environment2D.arrow.visible(viz.ON)
-		environment2D.thrust.disable()		
-		joystickMove.setEnabled(viz.ON)
+		environment.point.visible(viz.ON)
+		environment.goal.visible(viz.ON)	
+		if (parameters.training or parameters.intro):
+			environment.arrow.visible(viz.ON)
+		environment.thrust.disable()		
+		move.setEnabled(viz.ON)
 		#wait till key is pressed let object fall down
 		yield s.wait()
-		joystickMove.setEnabled(viz.OFF)
+		move.setEnabled(viz.OFF)
 		#set force on the point + no gravity
-		[x,z] = windSpeed.computeWindForce(environment2D.point.getPosition())
-		environment2D.thrust.setForce([x,0,z])
-		environment2D.thrust.enable();
-		print(environment2D.point.getPosition())
+		[x,z] = windSpeed.computeWindForce(environment.point.getPosition())
+		environment.thrust.setForce([x,0,z])
+		environment.thrust.enable();
+		print(environment.point.getPosition())
 		yield viztask.waitTime(1)
 		#show fallen object
-		print(environment2D.point.getPosition())
-		environment2D.thrust.disable()
-		environment2D.point.setVelocity([0,0,0])
+		print(environment.point.getPosition())
+		environment.thrust.disable()
+		environment.point.setVelocity([0,0,0])
 		yield viztask.waitTime(0.5)
 		#make point invisible wait and start next trial
-		environment2D.point.visible(viz.OFF)
-		environment2D.goal.visible(viz.OFF)
-		environment2D.arrow.visible(viz.OFF)
+		environment.point.visible(viz.OFF)
+		environment.goal.visible(viz.OFF)
+		if (parameters.training or parameters.intro):
+			environment.arrow.visible(viz.OFF)
 		yield viztask.waitTime(1)
 		
-def testing2DJoystick():
-	training = False
-	positions = createPositions()
-	joystickMove = vizact.ontimer(0, UpdateMovement)
-	
-	for i in positions:
-		environment2D.point.setPosition(0,20,0)
-		if i == 0:
-			environment2D.goal.setPosition(position0Xtest,0,position0Ztest)
-		elif i == 1:
-			environment2D.goal.setPosition(position1Xtest,0,position1Ztest)
-		elif i == 2:
-			environment2D.goal.setPosition(position2Xtest,0,position2Ztest)
-		elif i == 3:
-			environment2D.goal.setPosition(position3Xtest,0,position3Xtest)
-		
-		#enable joystick movement
-		environment2D.point.visible(viz.ON)
-		environment2D.goal.visible(viz.ON)	
-		environment2D.thrust.disable()		
-		joystickMove.setEnabled(viz.ON)
-		#wait till key is pressed let object fall down
-		yield s.wait()
-		joystickMove.setEnabled(viz.OFF)
-		#set force on the point + no gravity
-		[x,z] = windSpeed.computeWindForce(environment2D.point.getPosition())
-		environment2D.thrust.setForce([x,0,z])
-		environment2D.thrust.enable();
-		print(environment2D.point.getPosition())
-		yield viztask.waitTime(1)
-		#show fallen object
-		print(environment2D.point.getPosition())
-		environment2D.thrust.disable()
-		environment2D.point.setVelocity([0,0,0])
-		yield viztask.waitTime(0.5)
-		#make point invisible wait and start next trial
-		environment2D.point.visible(viz.OFF)
-		environment2D.goal.visible(viz.OFF)
-		yield viztask.waitTime(1)
+
 	
 			
 	

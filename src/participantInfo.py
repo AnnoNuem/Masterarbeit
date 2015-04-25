@@ -26,8 +26,8 @@ def getParticipantInfo():
 	participantInfo.addSeparator(padding=(20,20))
 	
 	#Add 2d 3D fields
-	radiobutton_2D = participantInfo.addLabelItem('2D',viz.addRadioButton(0))
-	radiobutton_3D = participantInfo.addLabelItem('3D',viz.addRadioButton(0))
+	radiobutton_2D = participantInfo.addLabelItem('2D',viz.addRadioButton(1))
+	radiobutton_3D = participantInfo.addLabelItem('3D',viz.addRadioButton(1))
 	participantInfo.addSeparator(padding=(20,20))
 
 	#Add submit button aligned to the right and wait until it's pressed
