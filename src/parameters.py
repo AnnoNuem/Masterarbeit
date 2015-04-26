@@ -22,6 +22,7 @@ joystick = False
 
 # object parameters
 point_height = 1
+pointRadius = 0.2
 arrow_height2D = 1.3
 arrow_height3D = 0.3
 arrow_size = 10;
@@ -55,4 +56,8 @@ position3Ztest = -1
 
 # joystick speed
 joySpeed = 2;
+
+#fieldsize
+fieldsizeX = 2.5
+fieldsizeZ = 2.5
 

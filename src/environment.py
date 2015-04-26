@@ -56,7 +56,8 @@ def createEnvironment():
 		ground.disable(viz.DEPTH_WRITE)
 		
 		# point
-		point = viz.add('ball.wrl')
+		#point = viz.add('ball.wrl')
+		point = vizshape.addSphere(radius = parameters.pointRadius, slices = 20, stacks = 20, axis = vizshape.AXIS_Y)
 		pointPhys = point.collideSphere()   # Define ball's physical properties 
 	
 		point.setEuler(0,90,0)
@@ -95,7 +96,8 @@ def createEnvironment():
 		viz.MainView.setPosition([0,8,0])
 		viz.MainView.setEuler([0,90,0])
 		
-		point = viz.add('ball.wrl')
+		#point = viz.add('ball.wrl')
+		point = vizshape.addSphere(radius = parameters.pointRadius, slices = 20, stacks = 20, axis = vizshape.AXIS_Y)
 		pointPhys = point.collideSphere()   # Define ball's physical properties 
 		thrust = point.addThruster(force=[0,0,0]) 
 		#goal

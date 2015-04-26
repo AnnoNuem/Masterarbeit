@@ -50,9 +50,23 @@ def UpdateMovement():
 	# Move the point based on xy-axis value
 	move_amount = parameters.joySpeed * elapsed
 	position = environment.point.getPosition()
-	position = [position[0] + x*move_amount,position[1],position[2] + y*move_amount]
-	# compute size direction and position of arrow
+	if parameters.joystick:
+		if ((position[0] + x*move_amount) > parameters.fieldsizeX):
+			position[0] = parameters.fieldsizeX
+		elif((position[0] + x*move_amount) < -parameters.fieldsizeX):
+			position[0] = -parameters.fieldsizeX
+		else:
+			position[0]+= x*move_amount
+		if ((position[2] + y*move_amount) > parameters.fieldsizeZ):
+			position[2] = parameters.fieldsizeZ
+		elif((position[2] + y*move_amount) < -parameters.fieldsizeZ):
+			position[2] = -parameters.fieldsizeZ
+		else:
+			position[2]+= y*move_amount	
+	else:
+		position = [position[0] + x*move_amount,position[1],position[2] + y*move_amount]
 	environment.point.setPosition(position)
+	# compute size direction and position of arrow
 	if parameters.dreiDEnvironment:
 		environment.shadow.setPosition(position[0], parameters.shadow_height, position[2])
 	if (parameters.intro or parameters.training):
@@ -71,6 +85,7 @@ def runSetOfTrials():
 	global data
 	global collided
 	global positionList
+	global hitPosition
 	collided = False
 	viz.callback( viz.COLLIDE_BEGIN_EVENT, onCollide )
 	positions = createPositions()

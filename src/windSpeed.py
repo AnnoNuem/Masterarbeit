@@ -2,8 +2,8 @@
 
 import math
 
-xscale = 0.015
-zscale = 0.015
+xscale = 0.01
+zscale = 0.01
 xbias = 0.005
 zbias = 0.005
 
