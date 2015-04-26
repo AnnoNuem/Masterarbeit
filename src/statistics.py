@@ -2,6 +2,7 @@
 import parameters
 from math import pow
 from math import sqrt
+from logger import writeTrialBlogStatistics
 
 #compute accuracy by comparing x and z cordinate of hit and goal
 def computeAccuracy(hitPosition, goalPosition):
@@ -25,6 +26,18 @@ def computeVariance(dropPosition, positions):
 		i+=1
 	variance = sumDistances/i
 	return variance
+	
+#compute average accuracy and variance over trial blog
+def computeTrialBlogStatistics(variances,accuracys, numberOfTrials):
+	sumAccuracy = 0
+	sumVariance = 0
+	for variance in variances:
+		sumVariance+= variance
+	for accuracy in accuracys:
+		sumAccuracy+= accuracy
+	meanAccuracy = sumAccuracy/numberOfTrials
+	meanVariance = sumVariance/numberOfTrials
+	writeTrialBlogStatistics(meanVariance,meanAccuracy,numberOfTrials)
 		
 	
 	

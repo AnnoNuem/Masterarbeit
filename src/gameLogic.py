@@ -27,7 +27,7 @@ def onCollide(e):
 	if not collided:
 		hitPosition = environment.point.getPosition()
 		collided = True
-		print(environment.point.getPosition())
+		#print(environment.point.getPosition())
 	
 def createPositions():
 	if parameters.intro:
@@ -90,6 +90,8 @@ def runSetOfTrials():
 	viz.callback( viz.COLLIDE_BEGIN_EVENT, onCollide )
 	positions = createPositions()
 	move = vizact.ontimer(0, UpdateMovement)
+	variances = []
+	accuracys = []	
 	
 	for i in positions:
 		data = ""
@@ -153,7 +155,10 @@ def runSetOfTrials():
 		parameters.trialNumber+= 1
 		data+= "\n" + str(positionList)
 		logger.write_logger(data)
-		
+		accuracys.append(accuracy)
+		variances.append(variance)
+	viztask.returnValue([variances,accuracys,positions.__len__()])
+	
 
 	
 			

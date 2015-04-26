@@ -27,3 +27,7 @@ def newTrialBlog():
 	
 def newTrial():
 	write_logger('\n##New Trial. Number=' + str(parameters.trialNumber))
+	
+def writeTrialBlogStatistics(variance, accuracy, numberOfTrials):
+	write_logger('\nMean Variance: ' + str(variance) + '\nMean accuracy: ' + str(accuracy) + '\nNumberOfTrials: ' + str(numberOfTrials) + '\n')
+	

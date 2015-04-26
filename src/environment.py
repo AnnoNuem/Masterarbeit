@@ -13,8 +13,6 @@ viz.phys.enable()
 viz.phys.setGravity([0,0,0]) 
 viz.gravity(0)
 
-
-
 info = vizinfo.InfoPanel("")
 
 point = -1
@@ -98,25 +96,26 @@ def createEnvironment():
 		
 		#point = viz.add('ball.wrl')
 		point = vizshape.addSphere(radius = parameters.pointRadius, slices = 20, stacks = 20, axis = vizshape.AXIS_Y)
-		pointPhys = point.collideSphere()   # Define ball's physical properties 
-		thrust = point.addThruster(force=[0,0,0]) 
-		#goal
-		goal = vizshape.addCircle(slices=100, radius=0.2)
-		#arrow
-		arrow = vizshape.addArrow()
-		viz.mouse(viz.OFF)
-		
-		goal.setEuler(0,90,0)
-		goal.color(viz.GREEN)
-		goal.visible(False)
-		goal.setScale(parameters.goal_scale2D,parameters.goal_scale2D,parameters.goal_scale2D)
-		
+		pointPhys = point.collideSphere()   # Define ball's physical properties 		
 		point.setEuler(0,90,0)
 		point.setPosition(0,parameters.point_height,0)
 		point.color(viz.RED)	
 		point.visible(False)
 		point.enable( viz.COLLIDE_NOTIFY )
+
+		#wind force
+		thrust = point.addThruster(force=[0,0,0]) 
 		
+		#goal
+		goal = vizshape.addCircle(slices=100, radius=0.2)
+		goal.setEuler(0,90,0)
+		goal.color(viz.GREEN)
+		goal.visible(False)
+		goal.setScale(parameters.goal_scale2D,parameters.goal_scale2D,parameters.goal_scale2D)
+		
+		#arrow
+		arrow = vizshape.addArrow()
+		viz.mouse(viz.OFF)
 		arrow.setPosition(0,parameters.arrow_height2D,0)
 		arrow.color(viz.BLUE)
 		arrow.visible(False)

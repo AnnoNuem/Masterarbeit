@@ -4,7 +4,7 @@ import vizact
 import vizinfo
 import vizproximity
 import vizshape
-import environment
+
 
 viz.res.addPath(r'C:\Users\axel\Desktop\Masterarbeit\resources')
 
@@ -14,6 +14,8 @@ from gameLogic import runSetOfTrials
 from environment import createEnvironment
 import parameters
 import logger
+import environment
+import statistics
 
 #vizard adjustments
 viz.setMultiSample(4)
@@ -40,7 +42,8 @@ def experiment():
 		environment.info.visible(viz.OFF)
 		createEnvironment()
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 		
 		#2d training jostick
 		parameters.dreiDEnvironment = False
@@ -52,7 +55,8 @@ def experiment():
 		yield viztask.waitTime(2)
 		environment.info.visible(viz.OFF)
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 		
 		#2d Testing joystick
 		parameters.dreiDEnvironment = False
@@ -64,7 +68,8 @@ def experiment():
 		yield viztask.waitTime(2)
 		environment.info.visible(viz.OFF)
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 		
 	elif parameters.participantData.environment=='3D':
 		#3d Environment Intro
@@ -78,7 +83,8 @@ def experiment():
 		environment.info.visible(viz.OFF)
 		createEnvironment()
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 		
 		#3d training jostick
 		parameters.dreiDEnvironment = True
@@ -90,7 +96,8 @@ def experiment():
 		yield viztask.waitTime(2)
 		environment.info.visible(viz.OFF)
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 		
 		#3d Testing joystick
 		parameters.dreiDEnvironment = True
@@ -102,7 +109,8 @@ def experiment():
 		yield viztask.waitTime(2)
 		environment.info.visible(viz.OFF)
 		logger.newTrialBlog()
-		yield runSetOfTrials()
+		[variances,accuracys, numberOfTrials] = yield runSetOfTrials()
+		statistics.computeTrialBlogStatistics(variances,accuracys, numberOfTrials)
 
 	logger.close_logger()
 	environment.info.setText("Experiment finished. Thank You")

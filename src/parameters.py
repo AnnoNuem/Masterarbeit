@@ -1,6 +1,18 @@
-﻿numberOfTrainingTrials = 1
-numberOfTestTrials = 1
-numberOfIntroTrials = 1
+﻿
+demo = True
+
+if demo:
+	numberOfTrainingTrials = 2
+	numberOfTestTrials = 2
+	numberOfIntroTrials = 2
+else:
+	numberOfTrainingTrials = 1
+	numberOfTestTrials = 1
+	numberOfIntroTrials = 1
+
+
+
+
 participantData = -1
 filename = -1
 #trial number. all trials are numerated from the beginning on.
