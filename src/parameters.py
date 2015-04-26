@@ -2,15 +2,13 @@
 demo = True
 
 if demo:
+	numberOfIntroTrials = 2
 	numberOfTrainingTrials = 2
 	numberOfTestTrials = 2
-	numberOfIntroTrials = 2
 else:
-	numberOfTrainingTrials = 1
-	numberOfTestTrials = 1
-	numberOfIntroTrials = 1
-
-
+	numberOfIntroTrials = 10
+	numberOfTrainingTrials = 20
+	numberOfTestTrials = 5
 
 
 participantData = -1
@@ -46,25 +44,15 @@ shadow_scale3D =  0.3
 shadow_height = 0.02
 
 # goal positions
-#goal positions for training
-position0Xtrain = 2
-position0Ztrain = -2
-position1Xtrain = 2
-position1Ztrain = 2
-position2Xtrain = -2
-position2Ztrain = 2
-position3Xtrain = -2
-position3Ztrain = -2
+radialCoordinateTesting = 1
+radialCoordinateTraining = 2
+#goal positions for training and intro. set in main
+radialCoordinate = -1
+angularCoordinate1 = -1
+angularCoordinate2 = -1
+angularCoordinate3 = -1
+angularCoordinate4 = -1
 
-#goal positions for training
-position0Xtest = 1
-position0Ztest = 0
-position1Xtest = -1
-position1Ztest = 0
-position2Xtest = 0
-position2Ztest = 1
-position3Xtest = 0
-position3Ztest = -1
 
 # joystick speed
 joySpeed = 2;
@@ -72,4 +60,19 @@ joySpeed = 2;
 #fieldsize
 fieldsizeX = 2.5
 fieldsizeZ = 2.5
+
+#flavour
+#defines how much the goals in testing are rotated arround origin
+# 1 = 0degree standard
+# 2 = 15deg
+# 3 = 30deg
+# 4 = 45deg
+flavour = 1
+
+#wind parameters. set in main
+xscale = 0.0
+zscale = 0.01
+xbias = 0.00
+zbias = 0.005
+
 

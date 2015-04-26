@@ -23,7 +23,7 @@ def close_logger():
 	write_logger('\nExperiment end: ' + time.strftime('%X'))
 	
 def newTrialBlog():
-	write_logger('\n\n###New Block of trials: 3D=' + str(parameters.dreiDEnvironment) + ', Intro=' + str(parameters.intro) + ', training=' + str(parameters.training) + ', joystick=' + str(parameters.joystick))
+	write_logger('\n\n###New Block of trials: 3D=' + str(parameters.dreiDEnvironment) + ', Intro=' + str(parameters.intro) + ', training=' + str(parameters.training) + ', joystick=' + str(parameters.joystick) + ', Flavour=' + str(parameters.flavour))
 	
 def newTrial():
 	write_logger('\n##New Trial. Number=' + str(parameters.trialNumber))

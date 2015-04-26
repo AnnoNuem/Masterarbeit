@@ -11,6 +11,7 @@ import environment
 import windSpeed
 import logger
 import statistics
+import math
 
 hitPosition = -1
 collided = False
@@ -79,7 +80,10 @@ def UpdateMovement():
 		environment.arrow.setScale([windSpeed.computeWindSpeed(position) * parameters.arrow_size + parameters.arroa_min_size, windSpeed.computeWindSpeed(position) * parameters.arrow_size + parameters.arroa_min_size, windSpeed.computeWindSpeed(position) * parameters.arrow_size + parameters.arroa_min_size])
 	positionList.append(position)
 
-
+def polar2cartesian(radial, angular):
+	x = radial * math.cos(math.radians(angular))
+	z = radial * math.sin(math.radians(angular))
+	return [x,z]
 	
 def runSetOfTrials():
 	global data
@@ -97,16 +101,17 @@ def runSetOfTrials():
 		data = ""
 		positionList = []
 		logger.newTrial()
-		environment.point.setPosition(0,parameters.point_height,0)
+		environment.point.setPosition(0,parameters.point_height,0)		
 		if i == 0:
-			environment.goal.setPosition(parameters.position0Xtrain,parameters.goal_height,parameters.position0Ztrain)
+			[x,z] = polar2cartesian(parameters.radialCoordinate, parameters.angularCoordinate1)
 		elif i == 1:
-			environment.goal.setPosition(parameters.position1Xtrain,parameters.goal_height,parameters.position1Ztrain)
+			[x,z] = polar2cartesian(parameters.radialCoordinate, parameters.angularCoordinate2)
 		elif i == 2:
-			environment.goal.setPosition(parameters.position2Xtrain,parameters.goal_height,parameters.position2Ztrain)
+			[x,z] = polar2cartesian(parameters.radialCoordinate, parameters.angularCoordinate3)
 		elif i == 3:
-			environment.goal.setPosition(parameters.position3Xtrain,parameters.goal_height,parameters.position3Xtrain)
-		
+			[x,z] = polar2cartesian(parameters.radialCoordinate, parameters.angularCoordinate4)
+		print [x,z]
+		environment.goal.setPosition(x, parameters.goal_height,z)
 		data += ( "\nGoal Position: " + str(environment.goal.getPosition()))
 		#enable joystick movement
 		environment.point.visible(viz.ON)

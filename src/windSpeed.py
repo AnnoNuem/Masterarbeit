@@ -1,22 +1,26 @@
 ﻿# wind speed computing 
 
 import math
+import parameters
 
-xscale = 0.01
-zscale = 0.01
-xbias = 0.005
-zbias = 0.005
 
+def getXY(position):
+	x = (position[0] + parameters.fieldsizeX ) * parameters.xscale + parameters.xbias
+	z = (position[2] + parameters.fieldsizeZ ) * parameters.zscale + parameters.zbias
+	return [x,z]
+	
+	
 #compute wind forces in x and z direction at given cordinate
 def computeWindForce(position):
-	return [(position[0]+ 2) * xscale + xbias, (position[2]+ 2)* zscale + xbias]
+	[x,z] = getXY(position)
+	return [x,z]
 
 def computeWindDirection(position):
-	x = (position[0]+ 2) * xscale + xbias
-	z = (position[2]+ 2) * zscale + zbias
+	[x,z] = getXY(position)
 	hypo = math.sqrt(x * x + z * z)
 	direction = math.asin(z/hypo)
-	return  - math.degrees(direction) + 90
+	return  - math.degrees(direction) + 90 
 	
 def computeWindSpeed(position):
-	return (position[0]+ 2)*  xbias +(position[2]+ 2)* zscale + zbias
+	[x,z] = getXY(position)
+	return math.sqrt(x*x+z*z)
